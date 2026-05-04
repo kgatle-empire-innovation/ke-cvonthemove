@@ -1,0 +1,19 @@
+{
+  "name": "ke-cvonthemove-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "db:generate": "npm run generate -w @cvonthemove/db",
+    "db:push": "npm run db:push -w @cvonthemove/db",
+    "api:dev": "npm run dev -w @cvonthemove/api",
+    "web:start": "npm start -w web",
+    "db:podman:up": "podman run --name cvonthemove-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=cvonthemove -p 5444:5432 -d postgres:15"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.1"
+  }
+}
