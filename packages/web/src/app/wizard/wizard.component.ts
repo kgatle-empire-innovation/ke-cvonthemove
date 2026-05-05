@@ -15,6 +15,7 @@ export class WizardComponent implements OnInit, OnDestroy {
   public wizardForm: FormGroup;
   private destroy$ = new Subject<void>();
   public saveStatus: string = '';
+  public isAiLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private wizardService: WizardService) {
     this.wizardForm = this.fb.group({
@@ -50,6 +51,30 @@ export class WizardComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.saveStatus = 'Error saving data';
+      }
+    });
+  }
+
+  public suggestSummary() {
+    const cvGroup = this.wizardForm.get('cv');
+    const summaryControl = cvGroup?.get('summary');
+    const currentText = summaryControl?.value;
+
+    if (!currentText) return;
+
+    this.isAiLoading = true;
+    this.wizardService.aiRefine({ text: currentText, type: 'summary', context: cvGroup?.get('title')?.value }).subscribe({
+      next: (response) => {
+        this.isAiLoading = false;
+        if (response.success && response.data?.refinedText) {
+          summaryControl?.setValue(response.data.refinedText, { emitEvent: true });
+        } else {
+          this.saveStatus = 'AI Refinement failed';
+        }
+      },
+      error: () => {
+        this.isAiLoading = false;
+        this.saveStatus = 'Error calling AI service';
       }
     });
   }
