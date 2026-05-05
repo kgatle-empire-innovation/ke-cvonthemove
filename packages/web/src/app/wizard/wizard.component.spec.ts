@@ -55,8 +55,34 @@ describe('WizardComponent', () => {
     vi.useRealTimers();
   });
 
+  it('should call aiRefine when suggestSummary is triggered', () => {
+    wizardServiceMock.aiRefine = vi.fn().mockReturnValue(of({ success: true, data: { refinedText: 'New Ai Summary' } }));
+    component.wizardForm.patchValue({ cv: { title: 'Engineer', summary: 'Old summary' } });
+    
+    component.suggestSummary();
+    
+    expect(component.isAiLoading).toBe(false);
+    expect(wizardServiceMock.aiRefine).toHaveBeenCalledWith({
+      text: 'Old summary',
+      type: 'summary',
+      context: 'Engineer'
+    });
+    expect(component.wizardForm.get('cv.summary')?.value).toBe('New Ai Summary');
+  });
+
+  it('should handle aiRefine error gracefully', () => {
+    wizardServiceMock.aiRefine = vi.fn().mockReturnValue(throwError(() => new Error('Error')));
+    component.wizardForm.patchValue({ cv: { title: 'Engineer', summary: 'Old summary' } });
+    
+    component.suggestSummary();
+    
+    expect(component.isAiLoading).toBe(false);
+    expect(component.saveStatus).toBe('Error calling AI service');
+  });
+
   it('should cleanup on destroy', () => {
     component.ngOnDestroy();
     expect(component['destroy$'].isStopped).toBe(true);
   });
 });
+

@@ -22,3 +22,15 @@ export interface ProfessionalTemplateProps extends BaseTemplateProps {
 }
 
 export type TemplateProperties = ModernTemplateProps | ClassicTemplateProps | ProfessionalTemplateProps;
+
+export type AiRefineType = 'summary' | 'job_description';
+
+export interface AiRefineRequest {
+  text: string;
+  type: AiRefineType;
+  context?: string;
+}
+
+export interface AiRefineResponse {
+  refinedText: string;
+}

@@ -13,7 +13,13 @@
       </div>
       
       <div class="form-group">
-        <label for="summary">Professional Summary</label>
+        <div class="label-with-action">
+          <label for="summary">Professional Summary</label>
+          <button type="button" class="ai-suggest-btn" (click)="suggestSummary()" [disabled]="isAiLoading || !wizardForm.get('cv.summary')?.value">
+            <span *ngIf="!isAiLoading">✨ AI Suggest</span>
+            <span *ngIf="isAiLoading">Loading...</span>
+          </button>
+        </div>
         <textarea id="summary" formControlName="summary" rows="4" placeholder="Briefly describe your professional background..."></textarea>
       </div>
     </div>

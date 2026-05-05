@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for controllers/WizardController.ts</title>
+    <title>Code coverage report for services/SessionPromotionService.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">controllers</a> WizardController.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> SessionPromotionService.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>2/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">28.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>2/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -88,55 +88,70 @@
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
-import { BaseController } from '../core/BaseController';
-import { WizardService } from '../services/WizardService';
-import { CV } from '@cvonthemove/db';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { BaseService } from '../core/BaseService';
 &nbsp;
-export class WizardController extends BaseController {
-  private wizardService: WizardService;
+export class SessionPromotionService extends BaseService {
+  /**
+   * Promotes an anonymous session to an authenticated user account.
+   * Reassigns all CVs (and their cascaded child records) from the sessionId to the new userId.
+   * Ensures data is not orphaned by using a transaction.
+   * Optionally cleans up the guest user record if it was a temporary guest account.
+   *
+   * @param sessionId The ID of the guest session
+   * @param newUserId The ID of the newly authenticated user
+   */
+  public <span class="fstat-no" title="function not covered" >async </span>promoteSession(sessionId: string, newUserId: string): Promise&lt;void&gt; {
+<span class="cstat-no" title="statement not covered" >    await this.db.$transaction(<span class="fstat-no" title="function not covered" >async </span>(tx) =&gt; {</span>
+      // 1. Reassign all CVs from the session ID to the new user ID.
+      // Because child records (WorkExperience, Education, Skill) are related
+      // to the CV via cvId, they will implicitly "move" with the CV.
+<span class="cstat-no" title="statement not covered" >      await tx.cV.updateMany({</span>
+        where: { userId: sessionId },
+        data: { userId: newUserId },
+      });
 &nbsp;
-  constructor() {
-    super();
-    this.wizardService = new WizardService();
+      // 2. Check if the session user was a temporary guest user and delete it to avoid orphaned records.
+      const guestUser = <span class="cstat-no" title="statement not covered" >await tx.user.findUnique({ where: { id: sessionId } });</span>
+<span class="cstat-no" title="statement not covered" >      if (guestUser &amp;&amp; guestUser.email.startsWith(`guest_${sessionId}`)) {</span>
+<span class="cstat-no" title="statement not covered" >        await tx.user.delete({ where: { id: sessionId } });</span>
+      }
+    });
   }
-&nbsp;
-  public updateWizardData = async (req: Request, res: Response): Promise&lt;void&gt; =&gt; {
-    try {
-      const sessionId = req.headers['x-session-id'] as string;
-      const data = req.body;
-      
-      const updatedCV = await this.wizardService.upsertGuestSessionAndSaveWizardData(sessionId, data);
-      this.sendSuccess&lt;CV&gt;(res, updatedCV);
-    } catch (error: any) {
-      this.sendError(res, 'Failed to update wizard data: ' + error.message);
-    }
-  };
 }
 &nbsp;</pre></td></tr></table></pre>
 

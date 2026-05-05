@@ -77,3 +77,11 @@ model Template {
   updatedAt   DateTime @updatedAt
   cvs         CV[]
 }
+
+model ConversationState {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  state     String
+  context   Json?
+  updatedAt DateTime @updatedAt
+}
