@@ -5,9 +5,9 @@ jest.mock('@cvonthemove/db', () => ({
   prisma: {
     user: { upsert: jest.fn() },
     cV: { findFirst: jest.fn(), create: jest.fn(), update: jest.fn(), findUniqueOrThrow: jest.fn() },
-    workExperience: { update: jest.fn(), create: jest.fn() },
-    education: { update: jest.fn(), create: jest.fn() },
-    skill: { update: jest.fn(), create: jest.fn() }
+    workExperience: { update: jest.fn(), updateMany: jest.fn(), create: jest.fn() },
+    education: { update: jest.fn(), updateMany: jest.fn(), create: jest.fn() },
+    skill: { update: jest.fn(), updateMany: jest.fn(), create: jest.fn() }
   }
 }));
 
@@ -53,9 +53,18 @@ describe('WizardService', () => {
     });
 
     expect(prisma.cV.update).toHaveBeenCalled();
-    expect(prisma.workExperience.update).toHaveBeenCalled();
-    expect(prisma.education.update).toHaveBeenCalled();
-    expect(prisma.skill.update).toHaveBeenCalled();
+    expect(prisma.workExperience.updateMany).toHaveBeenCalledWith({
+      where: { id: 'we1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.education.updateMany).toHaveBeenCalledWith({
+      where: { id: 'ed1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.skill.updateMany).toHaveBeenCalledWith({
+      where: { id: 'sk1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
     expect(result).toEqual({ id: 'cv1', title: 'New CV' });
   });
 
@@ -79,5 +88,26 @@ describe('WizardService', () => {
     expect(prisma.workExperience.create).not.toHaveBeenCalled();
     expect(prisma.education.create).not.toHaveBeenCalled();
     expect(prisma.skill.create).not.toHaveBeenCalled();
+  });
+
+  it('VULNERABILITY FIX VERIFICATION: should update education using id AND cvId, preventing IDOR', async () => {
+    (prisma.cV.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'cv1', userId: sessionId });
+    (prisma.cV.findUniqueOrThrow as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+
+    const attackerSessionId = 'attacker-session';
+    const victimEducationId = 'victim-education-id';
+
+    await service.upsertGuestSessionAndSaveWizardData(attackerSessionId, {
+      educations: [{ id: victimEducationId, degree: 'Hacked' }] as any
+    });
+
+    // The fix is that it uses 'updateMany' with both id AND cvId
+    expect(prisma.education.updateMany).toHaveBeenCalledWith({
+      where: { id: victimEducationId, cvId: 'cv1' },
+      data: expect.objectContaining({ degree: 'Hacked' })
+    });
+
+    // Ensure 'update' is not called
+    expect(prisma.education.update).not.toHaveBeenCalled();
   });
 });
