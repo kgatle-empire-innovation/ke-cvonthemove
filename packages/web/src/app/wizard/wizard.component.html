@@ -1,0 +1,21 @@
+<div class="wizard-container">
+  <h2>CV Builder (No-Login)</h2>
+  
+  <div class="status-indicator" *ngIf="saveStatus">
+    {{ saveStatus }}
+  </div>
+
+  <form [formGroup]="wizardForm">
+    <div formGroupName="cv" class="form-section">
+      <div class="form-group">
+        <label for="title">CV Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="e.g. Software Engineer" />
+      </div>
+      
+      <div class="form-group">
+        <label for="summary">Professional Summary</label>
+        <textarea id="summary" formControlName="summary" rows="4" placeholder="Briefly describe your professional background..."></textarea>
+      </div>
+    </div>
+  </form>
+</div>
