@@ -44,7 +44,10 @@ export class WizardService extends BaseService {
     if (data.workExperiences) {
       for (const we of data.workExperiences) {
         if (we.id) {
-          await this.db.workExperience.update({ where: { id: we.id }, data: { jobTitle: we.jobTitle, company: we.company, startDate: we.startDate, endDate: we.endDate, description: we.description } });
+          await this.db.workExperience.updateMany({
+            where: { id: we.id, cvId: cv.id },
+            data: { jobTitle: we.jobTitle, company: we.company, startDate: we.startDate, endDate: we.endDate, description: we.description }
+          });
         } else {
           await this.db.workExperience.create({ data: { ...we, cvId: cv.id } as any });
         }
@@ -54,7 +57,10 @@ export class WizardService extends BaseService {
     if (data.educations) {
       for (const ed of data.educations) {
         if (ed.id) {
-          await this.db.education.update({ where: { id: ed.id }, data: { degree: ed.degree, institution: ed.institution, startDate: ed.startDate, endDate: ed.endDate, description: ed.description } });
+          await this.db.education.updateMany({
+            where: { id: ed.id, cvId: cv.id },
+            data: { degree: ed.degree, institution: ed.institution, startDate: ed.startDate, endDate: ed.endDate, description: ed.description }
+          });
         } else {
           await this.db.education.create({ data: { ...ed, cvId: cv.id } as any });
         }
@@ -64,7 +70,10 @@ export class WizardService extends BaseService {
     if (data.skills) {
       for (const sk of data.skills) {
         if (sk.id) {
-          await this.db.skill.update({ where: { id: sk.id }, data: { name: sk.name, level: sk.level } });
+          await this.db.skill.updateMany({
+            where: { id: sk.id, cvId: cv.id },
+            data: { name: sk.name, level: sk.level }
+          });
         } else {
           await this.db.skill.create({ data: { ...sk, cvId: cv.id } as any });
         }
