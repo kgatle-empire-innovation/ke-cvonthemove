@@ -5,9 +5,9 @@ jest.mock('@cvonthemove/db', () => ({
   prisma: {
     user: { upsert: jest.fn() },
     cV: { findFirst: jest.fn(), create: jest.fn(), update: jest.fn(), findUniqueOrThrow: jest.fn() },
-    workExperience: { update: jest.fn(), create: jest.fn() },
-    education: { update: jest.fn(), create: jest.fn() },
-    skill: { update: jest.fn(), create: jest.fn() }
+    workExperience: { update: jest.fn(), create: jest.fn(), updateMany: jest.fn() },
+    education: { update: jest.fn(), create: jest.fn(), updateMany: jest.fn() },
+    skill: { update: jest.fn(), create: jest.fn(), updateMany: jest.fn() }
   }
 }));
 
@@ -53,9 +53,18 @@ describe('WizardService', () => {
     });
 
     expect(prisma.cV.update).toHaveBeenCalled();
-    expect(prisma.workExperience.update).toHaveBeenCalled();
-    expect(prisma.education.update).toHaveBeenCalled();
-    expect(prisma.skill.update).toHaveBeenCalled();
+    expect(prisma.workExperience.updateMany).toHaveBeenCalledWith({
+      where: { id: 'we1', cvId: 'cv1' },
+      data: expect.anything()
+    });
+    expect(prisma.education.updateMany).toHaveBeenCalledWith({
+      where: { id: 'ed1', cvId: 'cv1' },
+      data: expect.anything()
+    });
+    expect(prisma.skill.updateMany).toHaveBeenCalledWith({
+      where: { id: 'sk1', cvId: 'cv1' },
+      data: expect.anything()
+    });
     expect(result).toEqual({ id: 'cv1', title: 'New CV' });
   });
 
@@ -79,5 +88,25 @@ describe('WizardService', () => {
     expect(prisma.workExperience.create).not.toHaveBeenCalled();
     expect(prisma.education.create).not.toHaveBeenCalled();
     expect(prisma.skill.create).not.toHaveBeenCalled();
+  });
+
+  it('should only update skills belonging to the current CV (IDOR check)', async () => {
+    const ownCvId = 'cv1';
+    const otherSkillId = 'other-skill-id';
+
+    (prisma.cV.findFirst as jest.Mock).mockResolvedValueOnce({ id: ownCvId, userId: sessionId });
+    (prisma.cV.findUniqueOrThrow as jest.Mock).mockResolvedValueOnce({ id: ownCvId });
+
+    await service.upsertGuestSessionAndSaveWizardData(sessionId, {
+      skills: [{ id: otherSkillId, name: 'Malicious Update', level: 'Expert' }]
+    });
+
+    expect(prisma.skill.updateMany).toHaveBeenCalledWith({
+      where: { id: otherSkillId, cvId: ownCvId },
+      data: expect.anything()
+    });
+
+    // Check that update was NOT called (it was replaced by updateMany)
+    expect(prisma.skill.update).not.toHaveBeenCalled();
   });
 });
