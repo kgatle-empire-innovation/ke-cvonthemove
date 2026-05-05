@@ -80,4 +80,56 @@ describe('WizardService', () => {
     expect(prisma.education.create).not.toHaveBeenCalled();
     expect(prisma.skill.create).not.toHaveBeenCalled();
   });
+
+  it('should not allow mass assignment of unauthorized fields during creation', async () => {
+    (prisma.cV.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+    (prisma.cV.findUniqueOrThrow as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+
+    const startDate = new Date();
+    const unauthorizedData = {
+      workExperiences: [{
+        company: 'Corp',
+        jobTitle: 'Dev',
+        startDate,
+        extra: 'malicious'
+      }],
+      educations: [{
+        degree: 'BSc',
+        institution: 'Uni',
+        startDate,
+        extra: 'malicious'
+      }],
+      skills: [{
+        name: 'TS',
+        level: 'Pro',
+        extra: 'malicious'
+      }]
+    };
+
+    await service.upsertGuestSessionAndSaveWizardData(sessionId, unauthorizedData as any);
+
+    expect(prisma.workExperience.create).toHaveBeenCalledWith({
+      data: {
+        jobTitle: 'Dev',
+        company: 'Corp',
+        startDate,
+        cvId: 'cv1'
+      }
+    });
+    expect(prisma.education.create).toHaveBeenCalledWith({
+      data: {
+        degree: 'BSc',
+        institution: 'Uni',
+        startDate,
+        cvId: 'cv1'
+      }
+    });
+    expect(prisma.skill.create).toHaveBeenCalledWith({
+      data: {
+        name: 'TS',
+        level: 'Pro',
+        cvId: 'cv1'
+      }
+    });
+  });
 });
