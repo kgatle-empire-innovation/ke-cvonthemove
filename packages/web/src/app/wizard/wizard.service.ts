@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CV, WorkExperience, Education, Skill } from '@cvonthemove/db';
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
+import { ApiResponse } from '../shared/models/api-response';
 
 export interface WizardData {
   cv?: Partial<CV>;

@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Template } from '@cvonthemove/db';
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
+import { ApiResponse } from '../shared/models/api-response';
 
 @Injectable({
   providedIn: 'root'
