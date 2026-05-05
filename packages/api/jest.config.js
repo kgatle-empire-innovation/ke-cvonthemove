@@ -2,6 +2,9 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@cvonthemove/(.*)$': '<rootDir>/../$1/src',
+  },
   testMatch: ['**/*.spec.ts'],
   collectCoverageFrom: [
     'src/**/*.ts',
