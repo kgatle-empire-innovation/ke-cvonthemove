@@ -80,4 +80,36 @@ describe('WizardService', () => {
     expect(prisma.education.create).not.toHaveBeenCalled();
     expect(prisma.skill.create).not.toHaveBeenCalled();
   });
+
+  it('should NOT allow mass assignment when creating new records', async () => {
+    (prisma.cV.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+    (prisma.cV.findUniqueOrThrow as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+
+    const extraData = {
+      maliciousField: 'hack',
+      createdAt: new Date('2000-01-01'),
+      cvId: 'wrong-cv-id'
+    };
+
+    await service.upsertGuestSessionAndSaveWizardData(sessionId, {
+      workExperiences: [{ company: 'Corp', jobTitle: 'Dev', startDate: new Date(), ...extraData } as any],
+      educations: [{ degree: 'BSc', institution: 'Uni', startDate: new Date(), ...extraData } as any],
+      skills: [{ name: 'TS', level: 'Pro', ...extraData } as any]
+    });
+
+    // Verification: check if the malicious field or other unexpected fields were NOT passed to prisma.create
+
+    const weCall = (prisma.workExperience.create as jest.Mock).mock.calls[0][0].data;
+    expect(weCall).not.toHaveProperty('maliciousField');
+    expect(weCall).not.toHaveProperty('createdAt');
+    expect(weCall.cvId).toBe('cv1');
+
+    const edCall = (prisma.education.create as jest.Mock).mock.calls[0][0].data;
+    expect(edCall).not.toHaveProperty('maliciousField');
+    expect(edCall).not.toHaveProperty('createdAt');
+
+    const skCall = (prisma.skill.create as jest.Mock).mock.calls[0][0].data;
+    expect(skCall).not.toHaveProperty('maliciousField');
+    expect(skCall).not.toHaveProperty('createdAt');
+  });
 });

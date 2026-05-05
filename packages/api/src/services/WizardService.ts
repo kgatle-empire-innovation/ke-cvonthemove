@@ -46,7 +46,16 @@ export class WizardService extends BaseService {
         if (we.id) {
           await this.db.workExperience.update({ where: { id: we.id }, data: { jobTitle: we.jobTitle, company: we.company, startDate: we.startDate, endDate: we.endDate, description: we.description } });
         } else {
-          await this.db.workExperience.create({ data: { ...we, cvId: cv.id } as any });
+          await this.db.workExperience.create({
+            data: {
+              cvId: cv.id,
+              jobTitle: we.jobTitle!,
+              company: we.company!,
+              startDate: we.startDate!,
+              endDate: we.endDate,
+              description: we.description
+            }
+          });
         }
       }
     }
@@ -56,7 +65,16 @@ export class WizardService extends BaseService {
         if (ed.id) {
           await this.db.education.update({ where: { id: ed.id }, data: { degree: ed.degree, institution: ed.institution, startDate: ed.startDate, endDate: ed.endDate, description: ed.description } });
         } else {
-          await this.db.education.create({ data: { ...ed, cvId: cv.id } as any });
+          await this.db.education.create({
+            data: {
+              cvId: cv.id,
+              degree: ed.degree!,
+              institution: ed.institution!,
+              startDate: ed.startDate!,
+              endDate: ed.endDate,
+              description: ed.description
+            }
+          });
         }
       }
     }
@@ -66,7 +84,13 @@ export class WizardService extends BaseService {
         if (sk.id) {
           await this.db.skill.update({ where: { id: sk.id }, data: { name: sk.name, level: sk.level } });
         } else {
-          await this.db.skill.create({ data: { ...sk, cvId: cv.id } as any });
+          await this.db.skill.create({
+            data: {
+              cvId: cv.id,
+              name: sk.name!,
+              level: sk.level
+            }
+          });
         }
       }
     }
