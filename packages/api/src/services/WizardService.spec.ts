@@ -5,9 +5,9 @@ jest.mock('@cvonthemove/db', () => ({
   prisma: {
     user: { upsert: jest.fn() },
     cV: { findFirst: jest.fn(), create: jest.fn(), update: jest.fn(), findUniqueOrThrow: jest.fn() },
-    workExperience: { update: jest.fn(), create: jest.fn() },
-    education: { update: jest.fn(), create: jest.fn() },
-    skill: { update: jest.fn(), create: jest.fn() }
+    workExperience: { updateMany: jest.fn(), create: jest.fn() },
+    education: { updateMany: jest.fn(), create: jest.fn() },
+    skill: { updateMany: jest.fn(), create: jest.fn() }
   }
 }));
 
@@ -53,9 +53,18 @@ describe('WizardService', () => {
     });
 
     expect(prisma.cV.update).toHaveBeenCalled();
-    expect(prisma.workExperience.update).toHaveBeenCalled();
-    expect(prisma.education.update).toHaveBeenCalled();
-    expect(prisma.skill.update).toHaveBeenCalled();
+    expect(prisma.workExperience.updateMany).toHaveBeenCalledWith({
+      where: { id: 'we1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.education.updateMany).toHaveBeenCalledWith({
+      where: { id: 'ed1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.skill.updateMany).toHaveBeenCalledWith({
+      where: { id: 'sk1', cvId: 'cv1' },
+      data: expect.any(Object)
+    });
     expect(result).toEqual({ id: 'cv1', title: 'New CV' });
   });
 
@@ -79,5 +88,34 @@ describe('WizardService', () => {
     expect(prisma.workExperience.create).not.toHaveBeenCalled();
     expect(prisma.education.create).not.toHaveBeenCalled();
     expect(prisma.skill.create).not.toHaveBeenCalled();
+  });
+
+  it('should not be vulnerable to IDOR (fixed test)', async () => {
+    (prisma.cV.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'cv1', title: 'User CV' });
+    (prisma.cV.findUniqueOrThrow as jest.Mock).mockResolvedValueOnce({ id: 'cv1' });
+
+    const maliciousWeId = 'malicious-we-id';
+    const maliciousEdId = 'malicious-ed-id';
+    const maliciousSkId = 'malicious-sk-id';
+
+    await service.upsertGuestSessionAndSaveWizardData(sessionId, {
+      workExperiences: [{ id: maliciousWeId, company: 'Hacked', jobTitle: 'Hacker', startDate: new Date() }],
+      educations: [{ id: maliciousEdId, degree: 'Hacking', institution: 'Dark Web', startDate: new Date() }],
+      skills: [{ id: maliciousSkId, name: 'Phishing', level: 'Expert' }]
+    });
+
+    // Now it uses both id and cvId in the where clause
+    expect(prisma.workExperience.updateMany).toHaveBeenCalledWith({
+      where: { id: maliciousWeId, cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.education.updateMany).toHaveBeenCalledWith({
+      where: { id: maliciousEdId, cvId: 'cv1' },
+      data: expect.any(Object)
+    });
+    expect(prisma.skill.updateMany).toHaveBeenCalledWith({
+      where: { id: maliciousSkId, cvId: 'cv1' },
+      data: expect.any(Object)
+    });
   });
 });
