@@ -7,6 +7,29 @@ export class WizardService extends BaseService {
     data: { cv?: Partial<CV>, workExperiences?: Partial<WorkExperience>[], educations?: Partial<Education>[], skills?: Partial<Skill>[] }
   ): Promise<CV> {
     
+    await this.upsertGuestUser(sessionId);
+
+    const cv = await this.upsertCV(sessionId, data.cv);
+
+    if (data.workExperiences) {
+      await this.syncWorkExperiences(cv.id, data.workExperiences);
+    }
+
+    if (data.educations) {
+      await this.syncEducations(cv.id, data.educations);
+    }
+
+    if (data.skills) {
+      await this.syncSkills(cv.id, data.skills);
+    }
+
+    return this.db.cV.findUniqueOrThrow({
+      where: { id: cv.id },
+      include: { workExperiences: true, educations: true, skills: true }
+    });
+  }
+
+  private async upsertGuestUser(sessionId: string): Promise<void> {
     await this.db.user.upsert({
       where: { id: sessionId },
       update: {},
@@ -15,8 +38,9 @@ export class WizardService extends BaseService {
         email: `guest_${sessionId}@cvonthemove.local`
       }
     });
+  }
 
-    const cvData = data.cv || {};
+  private async upsertCV(sessionId: string, cvData: Partial<CV> = {}): Promise<CV> {
     let cv = await this.db.cV.findFirst({
       where: { userId: sessionId }
     });
@@ -41,39 +65,60 @@ export class WizardService extends BaseService {
       });
     }
 
-    if (data.workExperiences) {
-      for (const we of data.workExperiences) {
-        if (we.id) {
-          await this.db.workExperience.update({ where: { id: we.id }, data: { jobTitle: we.jobTitle, company: we.company, startDate: we.startDate, endDate: we.endDate, description: we.description } });
-        } else {
-          await this.db.workExperience.create({ data: { ...we, cvId: cv.id } as any });
-        }
-      }
-    }
-    
-    if (data.educations) {
-      for (const ed of data.educations) {
-        if (ed.id) {
-          await this.db.education.update({ where: { id: ed.id }, data: { degree: ed.degree, institution: ed.institution, startDate: ed.startDate, endDate: ed.endDate, description: ed.description } });
-        } else {
-          await this.db.education.create({ data: { ...ed, cvId: cv.id } as any });
-        }
-      }
-    }
-    
-    if (data.skills) {
-      for (const sk of data.skills) {
-        if (sk.id) {
-          await this.db.skill.update({ where: { id: sk.id }, data: { name: sk.name, level: sk.level } });
-        } else {
-          await this.db.skill.create({ data: { ...sk, cvId: cv.id } as any });
-        }
-      }
-    }
+    return cv;
+  }
 
-    return this.db.cV.findUniqueOrThrow({
-      where: { id: cv.id },
-      include: { workExperiences: true, educations: true, skills: true }
-    });
+  private async syncWorkExperiences(cvId: string, workExperiences: Partial<WorkExperience>[]): Promise<void> {
+    for (const we of workExperiences) {
+      if (we.id) {
+        await this.db.workExperience.update({
+          where: { id: we.id },
+          data: {
+            jobTitle: we.jobTitle,
+            company: we.company,
+            startDate: we.startDate,
+            endDate: we.endDate,
+            description: we.description
+          }
+        });
+      } else {
+        await this.db.workExperience.create({ data: { ...we, cvId } as any });
+      }
+    }
+  }
+
+  private async syncEducations(cvId: string, educations: Partial<Education>[]): Promise<void> {
+    for (const ed of educations) {
+      if (ed.id) {
+        await this.db.education.update({
+          where: { id: ed.id },
+          data: {
+            degree: ed.degree,
+            institution: ed.institution,
+            startDate: ed.startDate,
+            endDate: ed.endDate,
+            description: ed.description
+          }
+        });
+      } else {
+        await this.db.education.create({ data: { ...ed, cvId } as any });
+      }
+    }
+  }
+
+  private async syncSkills(cvId: string, skills: Partial<Skill>[]): Promise<void> {
+    for (const sk of skills) {
+      if (sk.id) {
+        await this.db.skill.update({
+          where: { id: sk.id },
+          data: {
+            name: sk.name,
+            level: sk.level
+          }
+        });
+      } else {
+        await this.db.skill.create({ data: { ...sk, cvId } as any });
+      }
+    }
   }
 }
