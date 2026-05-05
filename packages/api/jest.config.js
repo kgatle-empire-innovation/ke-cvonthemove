@@ -7,7 +7,6 @@ module.exports = {
     'src/**/*.ts',
     '!src/index.ts',
     '!src/core/ApiResponse.ts',
-    '!src/core/BaseController.ts',
     '!src/core/BaseService.ts'
   ],
   coverageThreshold: {
