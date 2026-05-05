@@ -1,0 +1,52 @@
+<div class="template-wrapper" *ngIf="template && properties">
+  
+  <!-- Modern Template -->
+  <ng-container *ngIf="isModern">
+    <div class="modern-layout" [style.--primary-color]="modernProps.primaryColor">
+      <aside class="sidebar" *ngIf="modernProps.hasSidebar">
+        <!-- Sidebar content here -->
+        <div class="placeholder-box">Sidebar (Modern)</div>
+      </aside>
+      <main class="content">
+        <h2>{{ template.name }}</h2>
+        <p>{{ template.description }}</p>
+        <div class="placeholder-box">Main Content (Modern)</div>
+      </main>
+    </div>
+  </ng-container>
+
+  <!-- Classic Template -->
+  <ng-container *ngIf="isClassic">
+    <div class="classic-layout" [style.--font-family]="classicProps.fontFamily">
+      <header class="classic-header">
+        <h1>{{ template.name }}</h1>
+        <p class="subtitle">{{ template.description }}</p>
+      </header>
+      <hr />
+      <main class="content">
+        <div class="placeholder-box">Main Content (Classic)</div>
+      </main>
+    </div>
+  </ng-container>
+
+  <!-- Professional Template -->
+  <ng-container *ngIf="isProfessional">
+    <div class="professional-layout" [style.--accent-color]="professionalProps.accentColor">
+      <div class="prof-header">
+        <div class="photo-placeholder" *ngIf="professionalProps.showPhoto">Photo</div>
+        <div class="title-section">
+          <h2>{{ template.name }}</h2>
+          <p>{{ template.description }}</p>
+        </div>
+      </div>
+      <div class="content-wrapper">
+        <div class="placeholder-box">Main Content (Professional)</div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+<div *ngIf="!template || !properties" class="loading-state">
+  <p>Loading template...</p>
+</div>

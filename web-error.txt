@@ -1,0 +1,57 @@
+
+> web@0.0.0 test
+> ng test
+
+[33m>[39m Building...
+[32m√[39m Building...
+[1mInitial chunk files[22m                [2m | [22m[1mNames[22m                           [2m | [22m [1mRaw size[22m
+[32mspec-app-app.js[39m                    [2m | [22m[2mspec-app-app[22m                    [2m | [22m [36m48.07 kB[39m[2m | [22m
+[32mspec-app-wizard-wizard.component.js[39m[2m | [22m[2mspec-app-wizard-wizard.component[22m[2m | [22m  [36m9.19 kB[39m[2m | [22m
+[32mchunk-CGZBV6BD.js[39m                  [2m | [22m[2m-[22m                               [2m | [22m  [36m4.07 kB[39m[2m | [22m
+[32mspec-app-wizard-wizard.service.js[39m  [2m | [22m[2mspec-app-wizard-wizard.service[22m  [2m | [22m  [36m1.94 kB[39m[2m | [22m
+[32mchunk-RFHHZG76.js[39m                  [2m | [22m[2m-[22m                               [2m | [22m  [36m1.44 kB[39m[2m | [22m
+[32minit-testbed.js[39m                    [2m | [22m[2minit-testbed[22m                    [2m | [22m  [36m1.21 kB[39m[2m | [22m
+[32mvitest-mock-patch.js[39m               [2m | [22m[2mvitest-mock-patch[22m               [2m | [22m[36m969 bytes[39m[2m | [22m
+[32mstyles.css[39m                         [2m | [22m[2mstyles[22m                          [2m | [22m [36m56 bytes[39m[2m | [22m
+
+[1m [22m                                  [2m | [22m[1mInitial total[22m                   [2m | [22m [1m66.95 kB[22m
+
+Application bundle generation complete. [1.809 seconds] - 2026-05-04T03:44:43.245Z
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.5 [39m[90mE:/Projects/KE Projects/cvonthemove/ke-cvonthemove/packages/web[39m
+
+ [32m✓[39m [30m[46m web [49m[39m src/app/wizard/wizard.service.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [31m❯[39m [30m[46m web [49m[39m src/app/wizard/wizard.component.spec.ts [2m([22m[2m0 test[22m[2m)[22m
+ [32m✓[39m [30m[46m web [49m[39m src/app/app.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 106[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m2 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 05:44:43
+[2m   Duration [22m 2.41s[2m (transform 1.12s, setup 2.16s, import 272ms, tests 139ms, environment 3.46s)[22m
+
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m [30m[46m web [49m[39m src/app/wizard/wizard.component.spec.ts[2m [ src/app/wizard/wizard.component.spec.ts ][22m
+[31m[1mError[22m: zone-testing.js is needed for the fakeAsync() test helper but could not be found.
+        Please make sure that your environment includes zone.js/testing[39m
+[90m [2m❯[22m withFakeAsyncTestModule ../../../../../KE%20Projects/cvonthemove/ke-cvonthemove/node_modules/@angular/core/fesm2022/testing.mjs:[2m297:11[22m[39m
+[90m [2m❯[22m fakeAsync ../../../../../KE%20Projects/cvonthemove/ke-cvonthemove/node_modules/@angular/core/fesm2022/testing.mjs:[2m311:10[22m[39m
+[36m [2m❯[22m src/app/wizard/wizard.component.spec.ts:[2m37:68[22m[39m
+    [90m 35|[39m   })[33m;[39m
+    [90m 36|[39m
+    [90m 37|[39m   it('should call updateWizardData when form changes (debounced)', fak…
+    [90m   |[39m                                                                    [31m^[39m
+    [90m 38|[39m     component[33m.[39mwizardForm[33m.[39m[34mpatchValue[39m({ cv[33m:[39m { title[33m:[39m [32m'New Title'[39m } })[33m;[39m
+    [90m 39|[39m     [34mtick[39m([34m500[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path E:\Projects\KE Projects\cvonthemove\ke-cvonthemove\packages\web
+npm error workspace web@0.0.0
+npm error location E:\Projects\KE Projects\cvonthemove\ke-cvonthemove\packages\web
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c ng test
