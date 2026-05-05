@@ -5,9 +5,10 @@ jest.mock('@cvonthemove/db', () => ({
   prisma: {
     user: { upsert: jest.fn() },
     cV: { findFirst: jest.fn(), create: jest.fn(), update: jest.fn(), findUniqueOrThrow: jest.fn() },
-    workExperience: { update: jest.fn(), create: jest.fn() },
-    education: { update: jest.fn(), create: jest.fn() },
-    skill: { update: jest.fn(), create: jest.fn() }
+    workExperience: { update: jest.fn(), create: jest.fn(), createMany: jest.fn() },
+    education: { update: jest.fn(), create: jest.fn(), createMany: jest.fn() },
+    skill: { update: jest.fn(), create: jest.fn(), createMany: jest.fn() },
+    $transaction: jest.fn((callback) => callback(prisma))
   }
 }));
 
@@ -34,9 +35,9 @@ describe('WizardService', () => {
 
     expect(prisma.user.upsert).toHaveBeenCalled();
     expect(prisma.cV.create).toHaveBeenCalled();
-    expect(prisma.workExperience.create).toHaveBeenCalled();
-    expect(prisma.education.create).toHaveBeenCalled();
-    expect(prisma.skill.create).toHaveBeenCalled();
+    expect(prisma.workExperience.createMany).toHaveBeenCalled();
+    expect(prisma.education.createMany).toHaveBeenCalled();
+    expect(prisma.skill.createMany).toHaveBeenCalled();
     expect(result).toEqual({ id: 'cv1', title: 'My CV' });
   });
 
