@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,52 +89,52 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
-import { BaseController } from '../core/BaseController';
-import { WizardService } from '../services/WizardService';
+<span class="cstat-no" title="statement not covered" >import { BaseController } from '../core/BaseController';</span>
+<span class="cstat-no" title="statement not covered" >import { WizardService } from '../services/WizardService';</span>
 import { CV } from '@cvonthemove/db';
 &nbsp;
-export class WizardController extends BaseController {
+<span class="cstat-no" title="statement not covered" >export class W</span>izardController extends BaseController {
   private wizardService: WizardService;
 &nbsp;
-  constructor() {
-    super();
-    this.wizardService = new WizardService();
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    super();</span>
+<span class="cstat-no" title="statement not covered" >    this.wizardService = new WizardService();</span>
   }
 &nbsp;
-  public updateWizardData = async (req: Request, res: Response): Promise&lt;void&gt; =&gt; {
-    try {
-      const sessionId = req.headers['x-session-id'] as string;
-      const data = req.body;
+  public updateWizardData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(req: Request, res: Response): Promise&lt;void&gt; =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const sessionId = <span class="cstat-no" title="statement not covered" >req.headers['x-session-id'] as string;</span>
+      const data = <span class="cstat-no" title="statement not covered" >req.body;</span>
       
-      const updatedCV = await this.wizardService.upsertGuestSessionAndSaveWizardData(sessionId, data);
-      this.sendSuccess&lt;CV&gt;(res, updatedCV);
+      const updatedCV = <span class="cstat-no" title="statement not covered" >await this.wizardService.upsertGuestSessionAndSaveWizardData(sessionId, data);</span>
+<span class="cstat-no" title="statement not covered" >      this.sendSuccess&lt;CV&gt;(res, updatedCV);</span>
     } catch (error: any) {
-      this.sendError(res, 'Failed to update wizard data: ' + error.message);
+<span class="cstat-no" title="statement not covered" >      this.sendError(res, 'Failed to update wizard data: ' + error.message);</span>
     }
   };
 }
@@ -145,7 +145,7 @@ export class WizardController extends BaseController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-05T04:54:15.262Z
+                at 2026-05-05T10:14:11.758Z
             </div>
         <script src="../prettify.js"></script>
         <script>
