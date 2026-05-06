@@ -3,6 +3,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/*.spec.ts'],
+  moduleNameMapper: {
+    '^@cvonthemove/(.*)$': '<rootDir>/../$1/src',
+  },
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/index.ts',
