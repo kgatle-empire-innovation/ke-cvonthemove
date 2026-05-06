@@ -69,9 +69,12 @@ export class WizardService extends BaseService {
   }
 
   private async syncWorkExperiences(cvId: string, workExperiences: Partial<WorkExperience>[]): Promise<void> {
-    for (const we of workExperiences) {
-      if (we.id) {
-        await this.db.workExperience.update({
+    const existingWE = workExperiences.filter(we => we.id);
+    const newWE = workExperiences.filter(we => !we.id);
+
+    await Promise.all([
+      ...existingWE.map(we =>
+        this.db.workExperience.update({
           where: { id: we.id },
           data: {
             jobTitle: we.jobTitle,
@@ -80,17 +83,21 @@ export class WizardService extends BaseService {
             endDate: we.endDate,
             description: we.description
           }
-        });
-      } else {
-        await this.db.workExperience.create({ data: { ...we, cvId } as any });
-      }
-    }
+        })
+      ),
+      newWE.length > 0 ? this.db.workExperience.createMany({
+        data: newWE.map(we => ({ ...we, cvId } as any))
+      }) : Promise.resolve()
+    ]);
   }
 
   private async syncEducations(cvId: string, educations: Partial<Education>[]): Promise<void> {
-    for (const ed of educations) {
-      if (ed.id) {
-        await this.db.education.update({
+    const existingEd = educations.filter(ed => ed.id);
+    const newEd = educations.filter(ed => !ed.id);
+
+    await Promise.all([
+      ...existingEd.map(ed =>
+        this.db.education.update({
           where: { id: ed.id },
           data: {
             degree: ed.degree,
@@ -99,26 +106,28 @@ export class WizardService extends BaseService {
             endDate: ed.endDate,
             description: ed.description
           }
-        });
-      } else {
-        await this.db.education.create({ data: { ...ed, cvId } as any });
-      }
-    }
+        })
+      ),
+      newEd.length > 0 ? this.db.education.createMany({
+        data: newEd.map(ed => ({ ...ed, cvId } as any))
+      }) : Promise.resolve()
+    ]);
   }
 
   private async syncSkills(cvId: string, skills: Partial<Skill>[]): Promise<void> {
-    for (const sk of skills) {
-      if (sk.id) {
-        await this.db.skill.update({
+    const existingSkills = skills.filter(sk => sk.id);
+    const newSkills = skills.filter(sk => !sk.id);
+
+    await Promise.all([
+      ...existingSkills.map(sk =>
+        this.db.skill.update({
           where: { id: sk.id },
-          data: {
-            name: sk.name,
-            level: sk.level
-          }
-        });
-      } else {
-        await this.db.skill.create({ data: { ...sk, cvId } as any });
-      }
-    }
+          data: { name: sk.name, level: sk.level }
+        })
+      ),
+      newSkills.length > 0 ? this.db.skill.createMany({
+        data: newSkills.map(sk => ({ ...sk, cvId } as any))
+      }) : Promise.resolve()
+    ]);
   }
 }
