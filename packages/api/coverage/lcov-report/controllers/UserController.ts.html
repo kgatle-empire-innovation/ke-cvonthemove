@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -86,46 +86,46 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from 'express';
-import { BaseController } from '../core/BaseController';
-import { UserService } from '../services/UserService';
+<span class="cstat-no" title="statement not covered" >import { BaseController } from '../core/BaseController';</span>
+<span class="cstat-no" title="statement not covered" >import { UserService } from '../services/UserService';</span>
 import { User } from '@cvonthemove/db';
 &nbsp;
-export class UserController extends BaseController {
+<span class="cstat-no" title="statement not covered" >export class U</span>serController extends BaseController {
   private userService: UserService;
 &nbsp;
-  constructor() {
-    super();
-    this.userService = new UserService();
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    super();</span>
+<span class="cstat-no" title="statement not covered" >    this.userService = new UserService();</span>
   }
 &nbsp;
-  public getAllUsers = async (req: Request, res: Response): Promise&lt;void&gt; =&gt; {
-    try {
-      const users = await this.userService.getAllUsers();
-      this.sendSuccess&lt;User[]&gt;(res, users);
+  public getAllUsers = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(req: Request, res: Response): Promise&lt;void&gt; =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const users = <span class="cstat-no" title="statement not covered" >await this.userService.getAllUsers();</span>
+<span class="cstat-no" title="statement not covered" >      this.sendSuccess&lt;User[]&gt;(res, users);</span>
     } catch (error) {
-      this.sendError(res, 'Failed to fetch users');
+<span class="cstat-no" title="statement not covered" >      this.sendError(res, 'Failed to fetch users');</span>
     }
   };
 }
@@ -136,7 +136,7 @@ export class UserController extends BaseController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-05T04:54:15.262Z
+                at 2026-05-05T10:14:11.758Z
             </div>
         <script src="../prettify.js"></script>
         <script>

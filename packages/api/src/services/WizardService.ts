@@ -42,33 +42,66 @@ export class WizardService extends BaseService {
     }
 
     if (data.workExperiences) {
-      for (const we of data.workExperiences) {
-        if (we.id) {
-          await this.db.workExperience.update({ where: { id: we.id }, data: { jobTitle: we.jobTitle, company: we.company, startDate: we.startDate, endDate: we.endDate, description: we.description } });
-        } else {
-          await this.db.workExperience.create({ data: { ...we, cvId: cv.id } as any });
-        }
-      }
+      const existingWE = data.workExperiences.filter(we => we.id);
+      const newWE = data.workExperiences.filter(we => !we.id);
+
+      await Promise.all([
+        ...existingWE.map(we =>
+          this.db.workExperience.update({
+            where: { id: we.id },
+            data: {
+              jobTitle: we.jobTitle,
+              company: we.company,
+              startDate: we.startDate,
+              endDate: we.endDate,
+              description: we.description
+            }
+          })
+        ),
+        newWE.length > 0 ? this.db.workExperience.createMany({
+          data: newWE.map(we => ({ ...we, cvId: cv!.id } as any))
+        }) : Promise.resolve()
+      ]);
     }
     
     if (data.educations) {
-      for (const ed of data.educations) {
-        if (ed.id) {
-          await this.db.education.update({ where: { id: ed.id }, data: { degree: ed.degree, institution: ed.institution, startDate: ed.startDate, endDate: ed.endDate, description: ed.description } });
-        } else {
-          await this.db.education.create({ data: { ...ed, cvId: cv.id } as any });
-        }
-      }
+      const existingEd = data.educations.filter(ed => ed.id);
+      const newEd = data.educations.filter(ed => !ed.id);
+
+      await Promise.all([
+        ...existingEd.map(ed =>
+          this.db.education.update({
+            where: { id: ed.id },
+            data: {
+              degree: ed.degree,
+              institution: ed.institution,
+              startDate: ed.startDate,
+              endDate: ed.endDate,
+              description: ed.description
+            }
+          })
+        ),
+        newEd.length > 0 ? this.db.education.createMany({
+          data: newEd.map(ed => ({ ...ed, cvId: cv!.id } as any))
+        }) : Promise.resolve()
+      ]);
     }
     
     if (data.skills) {
-      for (const sk of data.skills) {
-        if (sk.id) {
-          await this.db.skill.update({ where: { id: sk.id }, data: { name: sk.name, level: sk.level } });
-        } else {
-          await this.db.skill.create({ data: { ...sk, cvId: cv.id } as any });
-        }
-      }
+      const existingSkills = data.skills.filter(sk => sk.id);
+      const newSkills = data.skills.filter(sk => !sk.id);
+
+      await Promise.all([
+        ...existingSkills.map(sk =>
+          this.db.skill.update({
+            where: { id: sk.id },
+            data: { name: sk.name, level: sk.level }
+          })
+        ),
+        newSkills.length > 0 ? this.db.skill.createMany({
+          data: newSkills.map(sk => ({ ...sk, cvId: cv!.id } as any))
+        }) : Promise.resolve()
+      ]);
     }
 
     return this.db.cV.findUniqueOrThrow({
