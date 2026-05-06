@@ -3,3 +3,7 @@ dist/
 .env
 *.log
 .angular/
+*/coverage/
+coverage.txt
+.nyc_output/
+*.tsbuildinfo

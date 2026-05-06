@@ -1,0 +1,137 @@
+<div class="dashboard">
+  <!-- ── Topbar ──────────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <span class="brand-dot"></span>
+      <span class="brand-text">CV on the Move</span>
+    </div>
+    <div class="topbar-right">
+      @if (currentUser) {
+        <span class="user-greeting" id="user-greeting">
+          Hello, {{ currentUser.name || currentUser.email }}
+        </span>
+      }
+      <button id="logout-btn" class="btn-ghost" (click)="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <!-- ── Main Content ───────────────────────────────────────── -->
+  <main class="main-content">
+    <!-- Page heading row -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">My CVs</h1>
+        <p class="page-subtitle">Manage, duplicate, and perfect your professional story.</p>
+      </div>
+      <button id="new-cv-btn" class="btn-primary" (click)="newCv()">
+        <span class="btn-icon">＋</span> New CV
+      </button>
+    </div>
+
+    <!-- Error banner -->
+    @if (errorMessage) {
+      <div class="error-banner" role="alert">{{ errorMessage }}</div>
+    }
+
+    <!-- ── Skeleton loaders (loading state) ──────────────────── -->
+    @if (isLoading) {
+      <div class="cv-grid" aria-label="Loading CVs">
+        @for (_ of [1, 2, 3]; track $index) {
+          <div class="cv-card skeleton-card">
+            <div class="sk-line sk-title"></div>
+            <div class="sk-line sk-subtitle"></div>
+            <div class="sk-line sk-short"></div>
+            <div class="sk-footer">
+              <div class="sk-chip"></div>
+              <div class="sk-chip"></div>
+              <div class="sk-chip"></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- ── Empty state ────────────────────────────────────────── -->
+    @if (!isLoading && cvs.length === 0 && !errorMessage) {
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">📄</div>
+        <h2 class="empty-title">No CVs yet</h2>
+        <p class="empty-body">Create your first CV and let the world see what you're made of.</p>
+        <button class="btn-primary" (click)="newCv()">
+          <span class="btn-icon">＋</span> Create my first CV
+        </button>
+      </div>
+    }
+
+    <!-- ── CV Grid ────────────────────────────────────────────── -->
+    @if (!isLoading && cvs.length > 0) {
+      <div class="cv-grid" id="cv-grid">
+        @for (cv of cvs; track cv.id) {
+          <article
+            class="cv-card"
+            [class.actioning]="actioningId === cv.id"
+            [attr.data-cv-id]="cv.id"
+          >
+            <!-- Card header -->
+            <div class="card-top">
+              <div class="card-title-row">
+                <h2 class="cv-title">{{ cv.title }}</h2>
+                @if (actioningId === cv.id) {
+                  <span class="mini-spinner"></span>
+                }
+              </div>
+
+              @if (cv.summary) {
+                <p class="cv-summary">{{ cv.summary | slice:0:120 }}{{ cv.summary.length > 120 ? '…' : '' }}</p>
+              }
+            </div>
+
+            <!-- Meta chips -->
+            <div class="meta-row">
+              <span class="meta-chip">
+                💼 {{ cv.workExperiences.length }} exp
+              </span>
+              <span class="meta-chip">
+                🎓 {{ cv.educations.length }} edu
+              </span>
+              <span class="meta-chip">
+                ⚡ {{ cv.skills.length }} skills
+              </span>
+            </div>
+
+            <!-- Footer: date + actions -->
+            <div class="card-footer">
+              <span class="card-date">Updated {{ formatDate(cv.updatedAt) }}</span>
+
+              <div class="card-actions">
+                <button
+                  class="action-btn edit-btn"
+                  title="Edit"
+                  [attr.data-testid]="'edit-' + cv.id"
+                  (click)="editCv(cv)"
+                  [disabled]="!!actioningId"
+                >✏️ Edit</button>
+
+                <button
+                  class="action-btn dup-btn"
+                  title="Duplicate"
+                  [attr.data-testid]="'duplicate-' + cv.id"
+                  (click)="duplicate(cv)"
+                  [disabled]="!!actioningId"
+                >⧉ Duplicate</button>
+
+                <button
+                  class="action-btn del-btn"
+                  title="Delete"
+                  [attr.data-testid]="'delete-' + cv.id"
+                  (click)="deleteCv(cv)"
+                  [disabled]="!!actioningId"
+                >🗑 Delete</button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </main>
+</div>
