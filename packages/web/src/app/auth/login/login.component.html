@@ -1,0 +1,87 @@
+<section class="login-page">
+  <div class="login-card">
+    <!-- Brand -->
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">CV on the Move</span>
+    </div>
+
+    <h1 class="card-title">
+      {{ mode === 'login' ? 'Welcome back' : 'Create your account' }}
+    </h1>
+    <p class="card-subtitle">
+      {{ mode === 'login'
+        ? 'Sign in to manage your CVs'
+        : 'Join and start building your professional story' }}
+    </p>
+
+    <!-- Error banner -->
+    @if (errorMessage) {
+      <div class="error-banner" role="alert" id="auth-error">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Name (register only) -->
+      @if (mode === 'register') {
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" type="text" formControlName="name" placeholder="Jane Doe" autocomplete="name" />
+        </div>
+      }
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email">Email address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          [class.input-error]="form.get('email')?.invalid && form.get('email')?.touched"
+        />
+        @if (form.get('email')?.invalid && form.get('email')?.touched) {
+          <span class="field-error">Please enter a valid email.</span>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          [class.input-error]="form.get('password')?.invalid && form.get('password')?.touched"
+        />
+        @if (form.get('password')?.invalid && form.get('password')?.touched) {
+          <span class="field-error">Password must be at least 8 characters.</span>
+        }
+      </div>
+
+      <button
+        id="auth-submit-btn"
+        type="submit"
+        class="btn-primary"
+        [disabled]="form.invalid || isLoading"
+      >
+        @if (isLoading) {
+          <span class="spinner"></span>
+        } @else {
+          {{ mode === 'login' ? 'Sign in' : 'Create account' }}
+        }
+      </button>
+    </form>
+
+    <div class="divider"></div>
+
+    <p class="mode-toggle">
+      {{ mode === 'login' ? "Don't have an account?" : 'Already have an account?' }}
+      <button id="auth-toggle-btn" type="button" class="link-btn" (click)="toggleMode()">
+        {{ mode === 'login' ? 'Register' : 'Sign in' }}
+      </button>
+    </p>
+  </div>
+</section>
